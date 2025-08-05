@@ -11,8 +11,8 @@
             color: #333;
             padding: 20px;
             line-height: 1.6;
-            margin-bottom: 40px; /* Add some margin at the bottom for the footer */
-            position: relative; /* For absolute positioning of the footer */
+            margin-bottom: 40px;
+            position: relative;
         }
 
         .dark-mode {
@@ -167,7 +167,7 @@
         }
 
         .dark-mode #footer {
-            color: #ff69b4; /* A different red/pink for dark mode if you prefer */
+            color: #ff69b4;
         }
     </style>
 </head>
@@ -183,19 +183,19 @@
 
         <div class="section">
             <h2>Other Element Bonuses</h2>
-            <label>Ellie (Wind) Companion: <input type="number" id="ellie" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Wind Understanding: <input type="number" id="windUnderstanding" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Zeke (Earth) Companion: <input type="number" id="zeke" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Earth Understanding: <input type="number" id="earthUnderstanding" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Miho (Fire) Companion: <input type="number" id="miho" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Fire Understanding: <input type="number" id="fireUnderstanding" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Luna (Water) Companion: <input type="number" id="luna" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Water Understanding: <input type="number" id="waterUnderstanding" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Wind Relic: <input type="number" id="windRelic" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Earth Relic: <input type="number" id="earthRelic" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Fire Relic: <input type="number" id="fireRelic" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Water Relic: <input type="number" id="waterRelic" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
-            <label>Skill Proficiency: <input type="number" id="skillProf" value="0" oninput="calculateDamage(); compareAccessories();"/></label>
+            <label>Ellie (Wind) Companion: <input type="number" id="ellie" value="0" oninput="handleInput();"/></label>
+            <label>Wind Understanding: <input type="number" id="windUnderstanding" value="0" oninput="handleInput();"/></label>
+            <label>Zeke (Earth) Companion: <input type="number" id="zeke" value="0" oninput="handleInput();"/></label>
+            <label>Earth Understanding: <input type="number" id="earthUnderstanding" value="0" oninput="handleInput();"/></label>
+            <label>Miho (Fire) Companion: <input type="number" id="miho" value="0" oninput="handleInput();"/></label>
+            <label>Fire Understanding: <input type="number" id="fireUnderstanding" value="0" oninput="handleInput();"/></label>
+            <label>Luna (Water) Companion: <input type="number" id="luna" value="0" oninput="handleInput();"/></label>
+            <label>Water Understanding: <input type="number" id="waterUnderstanding" value="0" oninput="handleInput();"/></label>
+            <label>Wind Relic: <input type="number" id="windRelic" value="0" oninput="handleInput();"/></label>
+            <label>Earth Relic: <input type="number" id="earthRelic" value="0" oninput="handleInput();"/></label>
+            <label>Fire Relic: <input type="number" id="fireRelic" value="0" oninput="handleInput();"/></label>
+            <label>Water Relic: <input type="number" id="waterRelic" value="0" oninput="handleInput();"/></label>
+            <label>Skill Proficiency: <input type="number" id="skillProf" value="0" oninput="handleInput();"/></label>
         </div>
 
         <div class="result" id="results">
@@ -288,6 +288,74 @@
             45: 660, 46: 680, 47: 700, 48: 720, 49: 740, 50: 760,
             51: 760
         };
+        
+        function saveSettings() {
+            const settings = {};
+
+            // Save accessory settings
+            for (const key of ELEMENTS) {
+                settings[`${key}Raw`] = document.getElementById(`${key}Raw`).value;
+                for (let i = 1; i <= 4; i++) {
+                    settings[`${key}Slot${i}Type`] = document.getElementById(`${key}Slot${i}Type`).value;
+                    settings[`${key}Slot${i}Val`] = document.getElementById(`${key}Slot${i}Val`).value;
+                }
+            }
+
+            // Save other element bonuses
+            settings['ellie'] = document.getElementById('ellie').value;
+            settings['windUnderstanding'] = document.getElementById('windUnderstanding').value;
+            settings['zeke'] = document.getElementById('zeke').value;
+            settings['earthUnderstanding'] = document.getElementById('earthUnderstanding').value;
+            settings['miho'] = document.getElementById('miho').value;
+            settings['fireUnderstanding'] = document.getElementById('fireUnderstanding').value;
+            settings['luna'] = document.getElementById('luna').value;
+            settings['waterUnderstanding'] = document.getElementById('waterUnderstanding').value;
+            settings['windRelic'] = document.getElementById('windRelic').value;
+            settings['earthRelic'] = document.getElementById('earthRelic').value;
+            settings['fireRelic'] = document.getElementById('fireRelic').value;
+            settings['waterRelic'] = document.getElementById('waterRelic').value;
+            settings['skillProf'] = document.getElementById('skillProf').value;
+
+            localStorage.setItem('blorbCalculatorSettings', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('blorbCalculatorSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+
+                // Load accessory settings
+                for (const key of ELEMENTS) {
+                    if (settings[`${key}Raw`]) document.getElementById(`${key}Raw`).value = settings[`${key}Raw`];
+                    for (let i = 1; i <= 4; i++) {
+                        if (settings[`${key}Slot${i}Type`]) document.getElementById(`${key}Slot${i}Type`).value = settings[`${key}Slot${i}Type`];
+                        if (settings[`${key}Slot${i}Val`]) document.getElementById(`${key}Slot${i}Val`).value = settings[`${key}Slot${i}Val`];
+                    }
+                }
+
+                // Load other element bonuses
+                if (settings['ellie']) document.getElementById('ellie').value = settings['ellie'];
+                if (settings['windUnderstanding']) document.getElementById('windUnderstanding').value = settings['windUnderstanding'];
+                if (settings['zeke']) document.getElementById('zeke').value = settings['zeke'];
+                if (settings['earthUnderstanding']) document.getElementById('earthUnderstanding').value = settings['earthUnderstanding'];
+                if (settings['miho']) document.getElementById('miho').value = settings['miho'];
+                if (settings['fireUnderstanding']) document.getElementById('fireUnderstanding').value = settings['fireUnderstanding'];
+                if (settings['luna']) document.getElementById('luna').value = settings['luna'];
+                if (settings['waterUnderstanding']) document.getElementById('waterUnderstanding').value = settings['waterUnderstanding'];
+                if (settings['windRelic']) document.getElementById('windRelic').value = settings['windRelic'];
+                if (settings['earthRelic']) document.getElementById('earthRelic').value = settings['earthRelic'];
+                if (settings['fireRelic']) document.getElementById('fireRelic').value = settings['fireRelic'];
+                if (settings['waterRelic']) document.getElementById('waterRelic').value = settings['waterRelic'];
+                if (settings['skillProf']) document.getElementById('skillProf').value = settings['skillProf'];
+            }
+        }
+
+        // Single function to handle input changes
+        function handleInput() {
+            calculateDamage();
+            compareAccessories();
+            saveSettings();
+        }
 
         function createAccessorySection() {
             const container = document.getElementById("accessoriesContainer");
@@ -295,17 +363,17 @@
             for (const key of ELEMENTS) {
                 const el = ELEMENTS_DATA[key];
                 let html = `<div><h4>${el.label} Accessory</h4>`;
-                html += `<label>Base ${el.label} Damage: <input type="number" id="${key}Raw" value="0" oninput="calculateDamage(); compareAccessories();"/></label>`;
+                html += `<label>Base ${el.label} Damage: <input type="number" id="${key}Raw" value="0" oninput="handleInput()"/></label>`;
                 for (let i = 1; i <= 4; i++) {
                     html += `
                         <label>Slot ${i}:
-                            <select id="${key}Slot${i}Type" onchange="calculateDamage(); compareAccessories();">
+                            <select id="${key}Slot${i}Type" onchange="handleInput()">
                                 <option value="none">--</option>
                                 ${ACCESSORY_ELEMENTS.map(accEl =>
                                     `<option value="${accEl}">${ELEMENT_LABELS[accEl] || "All Attributes"}</option>`
                                 ).join("")}
                             </select>
-                            <select id="${key}Slot${i}Val" onchange="calculateDamage(); compareAccessories();">
+                            <select id="${key}Slot${i}Val" onchange="handleInput()">
                                 ${[0, 1, 2, 3, 4, 5, 6, 7].map(v => `<option value="${v}">${v}%</option>`).join("")}
                             </select>
                         </label>
@@ -638,6 +706,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             createAccessorySection();
+            loadSettings();
             calculateDamage();
             compareBossDamage();
             compareMobDamage();
