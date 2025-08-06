@@ -165,10 +165,23 @@
             color: red;
             margin-top: 20px;
         }
+        
+        #footer p {
+            margin: 0;
+            padding: 0;
+        }
 
         .dark-mode #footer {
             color: #ff69b4;
         }
+        
+        /* Substat Colors */
+        .color-2 { color: #868686; }
+        .color-3 { color: #64FF5C; }
+        .color-4 { color: #E88C2A; }
+        .color-5 { color: #7114BD; }
+        .color-6 { color: #E82A2A; }
+        .color-7 { color: #2AE8D2; }
     </style>
 </head>
 <body>
@@ -183,30 +196,35 @@
 
         <div class="section">
             <h2>Other Element Bonuses</h2>
-            <label>Ellie (Wind) Companion: <input type="number" id="ellie" value="0" oninput="handleInput();"/></label>
-            <label>Wind Understanding: <input type="number" id="windUnderstanding" value="0" oninput="handleInput();"/></label>
-            <label>Zeke (Earth) Companion: <input type="number" id="zeke" value="0" oninput="handleInput();"/></label>
-            <label>Earth Understanding: <input type="number" id="earthUnderstanding" value="0" oninput="handleInput();"/></label>
-            <label>Miho (Fire) Companion: <input type="number" id="miho" value="0" oninput="handleInput();"/></label>
-            <label>Fire Understanding: <input type="number" id="fireUnderstanding" value="0" oninput="handleInput();"/></label>
-            <label>Luna (Water) Companion: <input type="number" id="luna" value="0" oninput="handleInput();"/></label>
-            <label>Water Understanding: <input type="number" id="waterUnderstanding" value="0" oninput="handleInput();"/></label>
-            <label>Wind Relic: <input type="number" id="windRelic" value="0" oninput="handleInput();"/></label>
-            <label>Earth Relic: <input type="number" id="earthRelic" value="0" oninput="handleInput();"/></label>
-            <label>Fire Relic: <input type="number" id="fireRelic" value="0" oninput="handleInput();"/></label>
-            <label>Water Relic: <input type="number" id="waterRelic" value="0" oninput="handleInput();"/></label>
-            <label>Skill Proficiency: <input type="number" id="skillProf" value="0" oninput="handleInput();"/></label>
+            <label>Ellie (Wind) Companion: <input type="number" id="ellie" value="0" oninput="calculateAll();"/></label>
+            <label>Wind Understanding: <input type="number" id="windUnderstanding" value="0" oninput="calculateAll();"/></label>
+            <label>Wind Relic: <input type="number" id="windRelic" value="0" oninput="calculateAll();"/></label>
+            
+            <label>Zeke (Earth) Companion: <input type="number" id="zeke" value="0" oninput="calculateAll();"/></label>
+            <label>Earth Understanding: <input type="number" id="earthUnderstanding" value="0" oninput="calculateAll();"/></label>
+            <label>Earth Relic: <input type="number" id="earthRelic" value="0" oninput="calculateAll();"/></label>
+            
+            <label>Miho (Fire) Companion: <input type="number" id="miho" value="0" oninput="calculateAll();"/></label>
+            <label>Fire Understanding: <input type="number" id="fireUnderstanding" value="0" oninput="calculateAll();"/></label>
+            <label>Fire Relic: <input type="number" id="fireRelic" value="0" oninput="calculateAll();"/></label>
+            
+            <label>Luna (Water) Companion: <input type="number" id="luna" value="0" oninput="calculateAll();"/></label>
+            <label>Water Understanding: <input type="number" id="waterUnderstanding" value="0" oninput="calculateAll();"/></label>
+            <label>Water Relic: <input type="number" id="waterRelic" value="0" oninput="calculateAll();"/></label>
+            
+            <label>Skill Proficiency: <input type="number" id="skillProf" value="0" oninput="calculateAll();"/></label>
         </div>
 
         <div class="result" id="results">
+            <h3>Current Elemental Damage</h3>
             Calculation results will appear here.
         </div>
 
         <div class="comparison-container">
             <div class="comparison-section" id="bossComparisonSection">
                 <h2>Boss Damage Comparison</h2>
-                <label>Current Level: <input type="number" id="currentLevel" value="1" min="1" max="51" oninput="compareBossDamage()"/></label>
-                <label>Target Level: <input type="number" id="targetLevel" value="1" min="1" max="51" oninput="compareBossDamage()"/></label>
+                <label>Current Level: <input type="number" id="currentLevel" value="1" min="1" max="51" oninput="calculateAll()"/></label>
+                <label>Target Level: <input type="number" id="targetLevel" value="1" min="1" max="51" oninput="calculateAll()"/></label>
                 <div class="result" id="bossComparisonResult">
                     Enter level values to see the difference between current and target level.
                 </div>
@@ -214,8 +232,8 @@
 
             <div class="comparison-section" id="mobComparisonSection">
                 <h2>Normal Mob Damage Comparison</h2>
-                <label>Current Level: <input type="number" id="currentLevelMob" value="1" min="1" max="45" oninput="compareMobDamage()"/></label>
-                <label>Target Level: <input type="number" id="targetLevelMob" value="1" min="1" max="45" oninput="compareMobDamage()"/></label>
+                <label>Current Level: <input type="number" id="currentLevelMob" value="1" min="1" max="51" oninput="calculateAll()"/></label>
+                <label>Target Level: <input type="number" id="targetLevelMob" value="1" min="1" max="51" oninput="calculateAll()"/></label>
                 <div class="result" id="mobComparisonResult">
                     Enter level values to see the difference between current and target level.
                 </div>
@@ -230,8 +248,8 @@
                 <select id="accessoryToCompare" onchange="createAccessoryComparisonForm()">
                     <option value="none">-- Select --</option>
                     <option value="wind">Wind</option>
-                    <option value="fire">Fire</option>
                     <option value="earth">Earth</option>
+                    <option value="fire">Fire</option>
                     <option value="water">Water</option>
                 </select>
             </label>
@@ -245,11 +263,14 @@
             <button onclick="equipNewAccessory()" style="margin-top: 15px;">Equip New Accessory</button>
         </div>
 
-        <div id="footer">Made by LegendTele @astrolec</div>
+        <div id="footer">
+            <p>Made by LegendTele @astrolec</p>
+            <p>Inspired by 르나00</p>
+        </div>
     </div>
 
     <script>
-        const ELEMENTS = ["wind", "fire", "earth", "water"];
+        const ELEMENTS = ["wind", "earth", "fire", "water"];
         const ELEMENT_LABELS = {
             wind: "Wind",
             fire: "Fire",
@@ -257,11 +278,12 @@
             water: "Water"
         };
         const ACCESSORY_ELEMENTS = [...ELEMENTS, "all"];
+        const SUBSTAT_VALUES = [2, 3, 4, 5, 6, 7];
 
         const ELEMENTS_DATA = {
             wind: { companion: "ellie", understanding: "windUnderstanding", relic: "windRelic", label: "Wind" },
-            fire: { companion: "miho", understanding: "fireUnderstanding", relic: "fireRelic", label: "Fire" },
             earth: { companion: "zeke", understanding: "earthUnderstanding", relic: "earthRelic", label: "Earth" },
+            fire: { companion: "miho", understanding: "fireUnderstanding", relic: "fireRelic", label: "Fire" },
             water: { companion: "luna", understanding: "waterUnderstanding", relic: "waterRelic", label: "Water" },
         };
 
@@ -288,11 +310,13 @@
             45: 660, 46: 680, 47: 700, 48: 720, 49: 740, 50: 760,
             51: 760
         };
+
+        function getSubstatColorClass(value) {
+            return `color-${value}`;
+        }
         
         function saveSettings() {
             const settings = {};
-
-            // Save accessory settings
             for (const key of ELEMENTS) {
                 settings[`${key}Raw`] = document.getElementById(`${key}Raw`).value;
                 for (let i = 1; i <= 4; i++) {
@@ -300,22 +324,13 @@
                     settings[`${key}Slot${i}Val`] = document.getElementById(`${key}Slot${i}Val`).value;
                 }
             }
-
-            // Save other element bonuses
-            settings['ellie'] = document.getElementById('ellie').value;
-            settings['windUnderstanding'] = document.getElementById('windUnderstanding').value;
-            settings['zeke'] = document.getElementById('zeke').value;
-            settings['earthUnderstanding'] = document.getElementById('earthUnderstanding').value;
-            settings['miho'] = document.getElementById('miho').value;
-            settings['fireUnderstanding'] = document.getElementById('fireUnderstanding').value;
-            settings['luna'] = document.getElementById('luna').value;
-            settings['waterUnderstanding'] = document.getElementById('waterUnderstanding').value;
-            settings['windRelic'] = document.getElementById('windRelic').value;
-            settings['earthRelic'] = document.getElementById('earthRelic').value;
-            settings['fireRelic'] = document.getElementById('fireRelic').value;
-            settings['waterRelic'] = document.getElementById('waterRelic').value;
+            for (const key of Object.keys(ELEMENTS_DATA)) {
+              const elData = ELEMENTS_DATA[key];
+              settings[elData.companion] = document.getElementById(elData.companion).value;
+              settings[elData.understanding] = document.getElementById(elData.understanding).value;
+              settings[elData.relic] = document.getElementById(elData.relic).value;
+            }
             settings['skillProf'] = document.getElementById('skillProf').value;
-
             localStorage.setItem('blorbCalculatorSettings', JSON.stringify(settings));
         }
 
@@ -323,8 +338,6 @@
             const savedSettings = localStorage.getItem('blorbCalculatorSettings');
             if (savedSettings) {
                 const settings = JSON.parse(savedSettings);
-
-                // Load accessory settings
                 for (const key of ELEMENTS) {
                     if (settings[`${key}Raw`]) document.getElementById(`${key}Raw`).value = settings[`${key}Raw`];
                     for (let i = 1; i <= 4; i++) {
@@ -332,29 +345,14 @@
                         if (settings[`${key}Slot${i}Val`]) document.getElementById(`${key}Slot${i}Val`).value = settings[`${key}Slot${i}Val`];
                     }
                 }
-
-                // Load other element bonuses
-                if (settings['ellie']) document.getElementById('ellie').value = settings['ellie'];
-                if (settings['windUnderstanding']) document.getElementById('windUnderstanding').value = settings['windUnderstanding'];
-                if (settings['zeke']) document.getElementById('zeke').value = settings['zeke'];
-                if (settings['earthUnderstanding']) document.getElementById('earthUnderstanding').value = settings['earthUnderstanding'];
-                if (settings['miho']) document.getElementById('miho').value = settings['miho'];
-                if (settings['fireUnderstanding']) document.getElementById('fireUnderstanding').value = settings['fireUnderstanding'];
-                if (settings['luna']) document.getElementById('luna').value = settings['luna'];
-                if (settings['waterUnderstanding']) document.getElementById('waterUnderstanding').value = settings['waterUnderstanding'];
-                if (settings['windRelic']) document.getElementById('windRelic').value = settings['windRelic'];
-                if (settings['earthRelic']) document.getElementById('earthRelic').value = settings['earthRelic'];
-                if (settings['fireRelic']) document.getElementById('fireRelic').value = settings['fireRelic'];
-                if (settings['waterRelic']) document.getElementById('waterRelic').value = settings['waterRelic'];
+                for (const key of Object.keys(ELEMENTS_DATA)) {
+                  const elData = ELEMENTS_DATA[key];
+                  if (settings[elData.companion]) document.getElementById(elData.companion).value = settings[elData.companion];
+                  if (settings[elData.understanding]) document.getElementById(elData.understanding).value = settings[elData.understanding];
+                  if (settings[elData.relic]) document.getElementById(elData.relic).value = settings[elData.relic];
+                }
                 if (settings['skillProf']) document.getElementById('skillProf').value = settings['skillProf'];
             }
-        }
-
-        // Single function to handle input changes
-        function handleInput() {
-            calculateDamage();
-            compareAccessories();
-            saveSettings();
         }
 
         function createAccessorySection() {
@@ -363,18 +361,18 @@
             for (const key of ELEMENTS) {
                 const el = ELEMENTS_DATA[key];
                 let html = `<div><h4>${el.label} Accessory</h4>`;
-                html += `<label>Base ${el.label} Damage: <input type="number" id="${key}Raw" value="0" oninput="handleInput()"/></label>`;
+                html += `<label>Base ${el.label} Damage: <input type="number" id="${key}Raw" value="0" oninput="calculateAll()"/></label>`;
                 for (let i = 1; i <= 4; i++) {
                     html += `
                         <label>Slot ${i}:
-                            <select id="${key}Slot${i}Type" onchange="handleInput()">
+                            <select id="${key}Slot${i}Type" onchange="calculateAll()">
                                 <option value="none">--</option>
                                 ${ACCESSORY_ELEMENTS.map(accEl =>
                                     `<option value="${accEl}">${ELEMENT_LABELS[accEl] || "All Attributes"}</option>`
                                 ).join("")}
                             </select>
-                            <select id="${key}Slot${i}Val" onchange="handleInput()">
-                                ${[0, 1, 2, 3, 4, 5, 6, 7].map(v => `<option value="${v}">${v}%</option>`).join("")}
+                            <select id="${key}Slot${i}Val" onchange="calculateAll()">
+                                ${SUBSTAT_VALUES.map(v => `<option value="${v}" class="${getSubstatColorClass(v)}">${v}%</option>`).join("")}
                             </select>
                         </label>
                     `;
@@ -396,110 +394,84 @@
             return MOB_BONUS_TABLE[level] || 0;
         }
 
-        function calculateCurrentDamage(accessories) {
-            const baseDamage = 0;
-            const damages = {};
-
-            for (const key of ELEMENTS) {
-                const elData = ELEMENTS_DATA[key];
-
-                let totalPercentageBonus = 0;
-                let totalRawBonus = 0;
-
-                for (const accKey of ELEMENTS) {
-                    if (accessories[accKey]) {
-                        const acc = accessories[accKey];
-                        for (let i = 0; i < 4; i++) {
-                            const type = acc.slots[i].type;
-                            const val = Number(acc.slots[i].val) || 0;
-                            if (type === "none") continue;
-                            let bonus = val;
-                            if (type === accKey) {
-                                bonus *= 2;
-                            }
-                            if (type === "all") {
-                                ELEMENTS.forEach(el => totalPercentageBonus += (el === key ? bonus : 0));
-                            } else if (type === key) {
-                                totalPercentageBonus += bonus;
-                            }
-                        }
-                    } else {
-                        for (let i = 1; i <= 4; i++) {
-                            const type = document.getElementById(`${accKey}Slot${i}Type`).value;
-                            const val = Number(document.getElementById(`${accKey}Slot${i}Val`).value) || 0;
-                            if (type === "none") continue;
-                            let bonus = val;
-                            if (type === accKey) {
-                                bonus *= 2;
-                            }
-                            if (type === "all") {
-                                ELEMENTS.forEach(el => totalPercentageBonus += (el === key ? bonus : 0));
-                            } else if (type === key) {
-                                totalPercentageBonus += bonus;
-                            }
-                        }
-                    }
-                }
-
-                totalRawBonus += baseDamage;
-                if (accessories[key]) {
-                    totalRawBonus += Number(accessories[key].raw) || 0;
-                } else {
-                    totalRawBonus += Number(document.getElementById(`${key}Raw`).value) || 0;
-                }
-                totalRawBonus += (Number(document.getElementById(elData.companion).value) || 0);
-                totalRawBonus += (Number(document.getElementById(elData.understanding).value) || 0);
-                totalRawBonus += (Number(document.getElementById(elData.relic).value) || 0);
-                totalRawBonus += (Number(document.getElementById("skillProf").value) || 0);
-
-                const totalDamage = totalRawBonus * (1 + totalPercentageBonus / 100);
-                damages[key] = totalDamage;
+        function getAccessoryData(targetAccessories = {}) {
+          const accessories = {};
+          for (const key of ELEMENTS) {
+            if (targetAccessories[key]) {
+              accessories[key] = targetAccessories[key];
+            } else {
+              accessories[key] = {
+                raw: Number(document.getElementById(`${key}Raw`).value) || 0,
+                slots: []
+              };
+              for (let i = 1; i <= 4; i++) {
+                accessories[key].slots.push({
+                  type: document.getElementById(`${key}Slot${i}Type`).value,
+                  val: Number(document.getElementById(`${key}Slot${i}Val`).value) || 0
+                });
+              }
             }
-            return damages;
+          }
+          return accessories;
         }
+        
+        function calculateDamage(accessories) {
+          const allAccessories = getAccessoryData(accessories);
+          const damages = {};
+          const otherBonuses = getOtherBonuses();
 
-        function calculateDamage() {
-            const damages = calculateCurrentDamage({});
-            const results = [];
-            const baseDamage = 0;
-            const level = 1;
-            const bossBonusInput = 0;
-            const mobBonusInput = 0;
-
-            const totalBossBonus = getBossBonus(level) + bossBonusInput;
-            const totalMobBonus = getMobBonus(level) + mobBonusInput;
-
-            results.push(`🔹 **Boss Damage (%):** ${totalBossBonus}%`);
-            results.push(`🔹 **Mob Damage (%):** ${totalMobBonus}%`);
-            results.push(`<br/>`);
-
-            for (const key of ELEMENTS) {
-                const elData = ELEMENTS_DATA[key];
-                const totalPercentageBonus = calculateBonusPercentage(key);
-                results.push(`⚡ **${elData.label} Damage:** ${damages[key].toFixed(2)} (${totalPercentageBonus}% Bonus)`);
-            }
-            document.getElementById("results").innerHTML = results.join("<br/>");
-        }
-
-        function calculateBonusPercentage(element) {
+          for (const key of ELEMENTS) {
+            const elData = ELEMENTS_DATA[key];
             let totalPercentageBonus = 0;
+            let totalRawBonus = allAccessories[key].raw;
+
             for (const accKey of ELEMENTS) {
-                for (let i = 1; i <= 4; i++) {
-                    const type = document.getElementById(`${accKey}Slot${i}Type`).value;
-                    const val = Number(document.getElementById(`${accKey}Slot${i}Val`).value) || 0;
-                    if (type === "none") continue;
-                    let bonus = val;
-                    if (type === accKey) {
-                        bonus *= 2;
-                    }
-                    if (type === "all") {
-                        totalPercentageBonus += bonus;
-                    } else if (type === element) {
-                        totalPercentageBonus += bonus;
-                    }
+              const acc = allAccessories[accKey];
+              for (const slot of acc.slots) {
+                if (slot.type === "none") continue;
+                
+                let bonus = slot.val;
+                if (slot.type === accKey) {
+                  bonus *= 2;
                 }
+                
+                if (slot.type === "all") {
+                  totalPercentageBonus += bonus;
+                } else if (slot.type === key) {
+                  totalPercentageBonus += bonus;
+                }
+              }
             }
-            return totalPercentageBonus;
+
+            totalRawBonus += otherBonuses[elData.companion] + otherBonuses[elData.understanding] + otherBonuses[elData.relic] + otherBonuses.skillProf;
+
+            const totalDamage = totalRawBonus * (1 + totalPercentageBonus / 100);
+            damages[key] = { totalDamage, totalPercentageBonus };
+          }
+          return damages;
+        }
+
+        function getOtherBonuses() {
+          const bonuses = {};
+          for (const key of Object.keys(ELEMENTS_DATA)) {
+            const elData = ELEMENTS_DATA[key];
+            bonuses[elData.companion] = Number(document.getElementById(elData.companion).value) || 0;
+            bonuses[elData.understanding] = Number(document.getElementById(elData.understanding).value) || 0;
+            bonuses[elData.relic] = Number(document.getElementById(elData.relic).value) || 0;
+          }
+          bonuses.skillProf = Number(document.getElementById("skillProf").value) || 0;
+          return bonuses;
+        }
+
+        function updateResults() {
+            const damages = calculateDamage();
+            const results = [];
+            
+            for (const key of ELEMENTS) {
+                const elData = ELEMENTS_DATA[key];
+                results.push(`⚡ **${elData.label} Damage:** ${damages[key].totalDamage.toFixed(2)} (${damages[key].totalPercentageBonus}% Bonus)`);
+            }
+            document.getElementById("results").innerHTML = "<h3>Current Elemental Damage</h3>" + results.join("<br/>");
         }
 
         function compareBossDamage() {
@@ -511,12 +483,14 @@
 
             let comparisonText = "";
 
-            if (currentLevel >= targetLevel) {
+            if (currentLevel <= 0 || targetLevel <= 0) {
+              comparisonText = "Please enter valid levels (1-51).";
+            } else if (currentLevel >= targetLevel) {
                 comparisonText = `Target level must be higher than the current level.`;
             } else if (currentBossBonus === targetBossBonus) {
                 comparisonText = `No damage bonus increase found.`;
             } else {
-                const damageIncreasePercentage = ((targetBossBonus - currentBossBonus) / (100 + currentBossBonus)) * 100;
+                const damageIncreasePercentage = ((1 + targetBossBonus/100) / (1 + currentBossBonus/100) - 1) * 100;
                 comparisonText = `Your damage will increase by **%${damageIncreasePercentage.toFixed(2)}**.`;
             }
 
@@ -532,12 +506,14 @@
 
             let comparisonText = "";
 
-            if (currentLevel >= targetLevel) {
+            if (currentLevel <= 0 || targetLevel <= 0) {
+              comparisonText = "Please enter valid levels (1-51).";
+            } else if (currentLevel >= targetLevel) {
                 comparisonText = `Target level must be higher than the current level.`;
             } else if (currentMobBonus === targetMobBonus) {
                 comparisonText = `No damage bonus increase found.`;
             } else {
-                const damageIncreasePercentage = ((targetMobBonus - currentMobBonus) / (100 + currentMobBonus)) * 100;
+                const damageIncreasePercentage = ((1 + targetMobBonus/100) / (1 + currentMobBonus/100) - 1) * 100;
                 comparisonText = `Your damage will increase by **%${damageIncreasePercentage.toFixed(2)}**.`;
             }
 
@@ -572,16 +548,18 @@
                         <label>Base Damage: <input type="number" id="oldAccRaw" value="${currentRawValue}" oninput="compareAccessories()"/></label>
             `;
             for (let i = 1; i <= 4; i++) {
+                const selectedSubstatType = currentSlots[i-1].type;
+                const selectedSubstatVal = Number(currentSlots[i-1].val);
                 html += `
                     <label>Slot ${i}:
-                        <select id="oldAccSlot${i}Type" onchange="compareAccessories()">
+                        <select id="oldAccSlot${i}Type" onchange="compareAccessories(); updateSubstatColor('oldAccSlot${i}Val', this.value, document.getElementById('oldAccSlot${i}Val').value)">
                             <option value="none">--</option>
                             ${ACCESSORY_ELEMENTS.map(accEl =>
-                                `<option value="${accEl}" ${currentSlots[i-1].type === accEl ? 'selected' : ''}>${ELEMENT_LABELS[accEl] || "All Attributes"}</option>`
+                                `<option value="${accEl}" ${selectedSubstatType === accEl ? 'selected' : ''} class="${selectedSubstatType === accEl ? getSubstatColorClass(selectedSubstatVal) : ''}">${ELEMENT_LABELS[accEl] || "All Attributes"}</option>`
                             ).join("")}
                         </select>
-                        <select id="oldAccSlot${i}Val" onchange="compareAccessories()">
-                            ${[0, 1, 2, 3, 4, 5, 6, 7].map(v => `<option value="${v}" ${Number(currentSlots[i-1].val) === v ? 'selected' : ''}>${v}%</option>`).join("")}
+                        <select id="oldAccSlot${i}Val" onchange="compareAccessories(); updateSubstatColor('oldAccSlot${i}Type', document.getElementById('oldAccSlot${i}Type').value, this.value)">
+                            ${SUBSTAT_VALUES.map(v => `<option value="${v}" class="${getSubstatColorClass(v)}" ${selectedSubstatVal === v ? 'selected' : ''}>${v}%</option>`).join("")}
                         </select>
                     </label>
                 `;
@@ -595,14 +573,14 @@
             for (let i = 1; i <= 4; i++) {
                 html += `
                     <label>Slot ${i}:
-                        <select id="newAccSlot${i}Type" onchange="compareAccessories()">
+                        <select id="newAccSlot${i}Type" onchange="compareAccessories(); updateSubstatColor('newAccSlot${i}Val', this.value, document.getElementById('newAccSlot${i}Val').value)">
                             <option value="none">--</option>
                             ${ACCESSORY_ELEMENTS.map(accEl =>
                                 `<option value="${accEl}">${ELEMENT_LABELS[accEl] || "All Attributes"}</option>`
                             ).join("")}
                         </select>
-                        <select id="newAccSlot${i}Val" onchange="compareAccessories()">
-                            ${[0, 1, 2, 3, 4, 5, 6, 7].map(v => `<option value="${v}">${v}%</option>`).join("")}
+                        <select id="newAccSlot${i}Val" onchange="compareAccessories(); updateSubstatColor('newAccSlot${i}Type', document.getElementById('newAccSlot${i}Type').value, this.value)">
+                            ${SUBSTAT_VALUES.map(v => `<option value="${v}" class="${getSubstatColorClass(v)}">${v}%</option>`).join("")}
                         </select>
                     </label>
                 `;
@@ -613,54 +591,64 @@
             `;
             formContainer.innerHTML = html;
             compareAccessories();
+            // Initial color update for the new form
+            for(let i = 1; i <= 4; i++) {
+                updateSubstatColor(`oldAccSlot${i}Type`, document.getElementById(`oldAccSlot${i}Type`).value, document.getElementById(`oldAccSlot${i}Val`).value);
+                updateSubstatColor(`newAccSlot${i}Type`, document.getElementById(`newAccSlot${i}Type`).value, document.getElementById(`newAccSlot${i}Val`).value);
+            }
+        }
+
+        function updateSubstatColor(elementId, typeValue, valValue) {
+            const elementSelect = document.getElementById(elementId);
+            const value = Number(valValue);
+
+            // Clear existing color classes
+            for (let i = 0; i < elementSelect.options.length; i++) {
+                elementSelect.options[i].classList.remove('color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7');
+            }
+
+            // Apply color class to the selected option if it's the correct type and value
+            if (typeValue !== 'none' && value > 1) {
+                const colorClass = getSubstatColorClass(value);
+                const typeOption = elementSelect.querySelector(`option[value="${typeValue}"]`);
+                if(typeOption) {
+                    typeOption.classList.add(colorClass);
+                }
+            }
         }
 
         function compareAccessories() {
             const mainElement = document.getElementById("accessoryToCompare").value;
             const resultDiv = document.getElementById("accessoryComparisonResult");
 
-            if (mainElement === "none") {
+            if (mainElement === "none" || !document.getElementById("newAccRaw")) {
                 resultDiv.innerHTML = "Select an option above to open the comparison form.";
                 return;
             }
 
-            const currentAccessories = {};
-            ELEMENTS.forEach(key => {
-                currentAccessories[key] = {
-                    raw: document.getElementById(`${key}Raw`).value,
-                    slots: []
-                };
-                for(let i = 1; i <= 4; i++) {
-                    currentAccessories[key].slots.push({
-                        type: document.getElementById(`${key}Slot${i}Type`).value,
-                        val: document.getElementById(`${key}Slot${i}Val`).value
-                    });
-                }
-            });
-
-            const newAccessoryValues = {
-                raw: document.getElementById("newAccRaw").value,
-                slots: []
+            const oldAccessories = getAccessoryData();
+            const newAccessories = getAccessoryData();
+            newAccessories[mainElement] = {
+              raw: Number(document.getElementById("newAccRaw").value) || 0,
+              slots: []
             };
             for(let i = 1; i <= 4; i++) {
-                newAccessoryValues.slots.push({
-                    type: document.getElementById(`newAccSlot${i}Type`).value,
-                    val: document.getElementById(`newAccSlot${i}Val`).value
-                });
+              newAccessories[mainElement].slots.push({
+                type: document.getElementById(`newAccSlot${i}Type`).value,
+                val: Number(document.getElementById(`newAccSlot${i}Val`).value) || 0
+              });
             }
-
-            const oldTotalDamages = calculateCurrentDamage(currentAccessories);
-            const newAccessories = {...currentAccessories};
-            newAccessories[mainElement] = newAccessoryValues;
-            const newTotalDamages = calculateCurrentDamage(newAccessories);
+            
+            const oldTotalDamages = calculateDamage(oldAccessories);
+            const newTotalDamages = calculateDamage(newAccessories);
 
             let comparisonText = `**Damage changes when you equip the new accessory:**<br/>`;
             let hasChange = false;
 
             for (const key of ELEMENTS) {
-                const oldDamage = oldTotalDamages[key];
-                const newDamage = newTotalDamages[key];
-
+                const oldDamage = oldTotalDamages[key].totalDamage;
+                const newDamage = newTotalDamages[key].totalDamage;
+                
                 if (oldDamage === 0 && newDamage === 0) continue;
 
                 let differencePercentage = 0;
@@ -670,7 +658,7 @@
                     differencePercentage = 100;
                 }
 
-                if (differencePercentage !== 0) {
+                if (Math.abs(differencePercentage) > 0.01) {
                     hasChange = true;
                     const sign = differencePercentage > 0 ? "+" : "";
                     const colorClass = differencePercentage > 0 ? "green-text" : "red-text";
@@ -687,7 +675,7 @@
 
         function equipNewAccessory() {
             const mainElement = document.getElementById("accessoryToCompare").value;
-            if (mainElement === "none") return;
+            if (mainElement === "none" || !document.getElementById("newAccRaw")) return;
 
             const newRaw = (Number(document.getElementById("newAccRaw").value) || 0);
             document.getElementById(`${mainElement}Raw`).value = newRaw;
@@ -700,16 +688,55 @@
             }
 
             createAccessorySection();
-            calculateDamage();
+            calculateAll();
+            createAccessoryComparisonForm();
+        }
+        
+        function calculateAll() {
+          saveSettings();
+          updateResults();
+          compareBossDamage();
+          compareMobDamage();
+          const selectedElement = document.getElementById("accessoryToCompare").value;
+          if (selectedElement !== "none") {
             compareAccessories();
+          }
+        }
+
+        function handleMainAccessoryChange(elementKey, slotIndex) {
+            const typeSelect = document.getElementById(`${elementKey}Slot${slotIndex}Type`);
+            const valSelect = document.getElementById(`${elementKey}Slot${slotIndex}Val`);
+            // Clear all color classes from all options in both selects
+            for(const select of [typeSelect, valSelect]) {
+                for(const option of select.options) {
+                    option.classList.remove('color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7');
+                }
+            }
+            // Apply color to the selected options
+            const typeValue = typeSelect.value;
+            const valValue = Number(valSelect.value);
+            if(typeValue !== 'none' && valValue > 1) {
+                const colorClass = getSubstatColorClass(valValue);
+                typeSelect.querySelector(`option[value="${typeValue}"]`).classList.add(colorClass);
+                valSelect.querySelector(`option[value="${valValue}"]`).classList.add(colorClass);
+            }
+            calculateAll();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             createAccessorySection();
             loadSettings();
-            calculateDamage();
-            compareBossDamage();
-            compareMobDamage();
+            calculateAll();
+
+            // Add event listeners for main accessory sections
+            for(const key of ELEMENTS) {
+                for(let i = 1; i <= 4; i++) {
+                    document.getElementById(`${key}Slot${i}Type`).addEventListener('change', () => handleMainAccessoryChange(key, i));
+                    document.getElementById(`${key}Slot${i}Val`).addEventListener('change', () => handleMainAccessoryChange(key, i));
+                    // Initial color update
+                    handleMainAccessoryChange(key, i);
+                }
+            }
         });
     </script>
 </body>
